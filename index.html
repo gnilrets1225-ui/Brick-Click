@@ -2,21 +2,338 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Colinization Clicker</title>
   <link rel="stylesheet" href="style.css" />
+
+  <style id="mobile-ipad-compatibility">
+    html,
+    body {
+      max-width: 100%;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    button {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    canvas {
+      max-width: 100%;
+    }
+
+    @media (max-width: 1024px) {
+      html,
+      body {
+        min-height: 100%;
+      }
+
+      body {
+        min-height: 100vh;
+        min-height: 100dvh;
+        overflow-y: auto !important;
+      }
+
+      .game-shell {
+        width: calc(100% - 16px) !important;
+        max-width: 1000px !important;
+        height: auto !important;
+        min-height: 100dvh !important;
+        margin: 8px auto !important;
+        overflow: visible !important;
+      }
+
+      .topbar {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+        height: auto !important;
+        gap: 10px !important;
+      }
+
+      .brand {
+        min-width: 0 !important;
+        text-align: center;
+      }
+
+      .brand h1 {
+        margin-inline: 0 !important;
+        white-space: normal !important;
+        overflow-wrap: anywhere;
+      }
+
+      .resource-strip {
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        gap: 8px !important;
+      }
+
+      .resource-card {
+        min-width: 0 !important;
+      }
+
+      .resource-card strong,
+      .resource-card span {
+        overflow-wrap: anywhere;
+      }
+
+      .top-controls {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        width: 100% !important;
+        gap: 8px !important;
+      }
+
+      .game-grid {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        grid-template-rows: auto !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        gap: 12px !important;
+        overflow: visible !important;
+      }
+
+      .panel,
+      .left-panel,
+      .store-panel,
+      .upgrades-panel {
+        width: 100% !important;
+        min-width: 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+      }
+
+      .planet-scene {
+        width: 100% !important;
+        height: min(58vh, 560px) !important;
+        min-height: 390px !important;
+        overflow: hidden !important;
+      }
+
+      .planet-button {
+        width: min(62vw, 440px) !important;
+        height: min(62vw, 440px) !important;
+        max-width: 78% !important;
+        max-height: 78% !important;
+      }
+
+      #planetCanvas,
+      #orbitCanvas,
+      #clickCanvas {
+        max-width: 100% !important;
+      }
+
+      .world-stats {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        width: 100% !important;
+      }
+
+      .stat-block {
+        min-width: 0 !important;
+      }
+
+      .section-header {
+        gap: 8px !important;
+      }
+
+      .section-header p {
+        max-width: 100% !important;
+      }
+
+      .scroll-list {
+        max-height: 440px !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+      }
+
+      .tabs {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        width: 100% !important;
+      }
+
+      .tiny-button,
+      .nav-button,
+      .action-button,
+      .tab,
+      .footer-button {
+        min-height: 44px !important;
+      }
+
+      .footer {
+        width: 100% !important;
+        height: auto !important;
+        gap: 10px !important;
+        flex-wrap: wrap !important;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .game-shell {
+        width: calc(100% - 8px) !important;
+        margin: 4px auto !important;
+      }
+
+      .topbar {
+        padding: 8px !important;
+      }
+
+      .brand h1 {
+        font-size: clamp(1.2rem, 7vw, 1.7rem) !important;
+        line-height: 1.05 !important;
+      }
+
+      .brand-mini {
+        font-size: 0.62rem !important;
+      }
+
+      .resource-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+      }
+
+      .resource-card {
+        padding: 7px !important;
+      }
+
+      .resource-card span {
+        font-size: 0.58rem !important;
+      }
+
+      .resource-card strong {
+        font-size: 0.9rem !important;
+      }
+
+      .planet-nav {
+        grid-template-columns: 46px minmax(0, 1fr) 46px !important;
+        gap: 6px !important;
+      }
+
+      .planet-title-wrap {
+        min-width: 0 !important;
+      }
+
+      .planet-title-wrap h2,
+      .planet-title-wrap p,
+      .planet-title-wrap span {
+        overflow-wrap: anywhere;
+      }
+
+      .planet-scene {
+        height: min(54vh, 430px) !important;
+        min-height: 320px !important;
+      }
+
+      .planet-button {
+        width: min(72vw, 320px) !important;
+        height: min(72vw, 320px) !important;
+        max-width: 82% !important;
+        max-height: 82% !important;
+      }
+
+      .world-stats {
+        gap: 5px !important;
+      }
+
+      .stat-block {
+        padding-inline: 5px !important;
+      }
+
+      .stat-block span {
+        font-size: 0.54rem !important;
+      }
+
+      .stat-block strong {
+        font-size: 0.78rem !important;
+      }
+
+      .development-wrap,
+      .section-header,
+      .tabs,
+      .scroll-list {
+        min-width: 0 !important;
+      }
+
+      .section-header {
+        display: block !important;
+      }
+
+      .section-header p {
+        margin-top: 5px !important;
+      }
+
+      .scroll-list {
+        max-height: 370px !important;
+      }
+
+      .footer {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        text-align: center !important;
+      }
+
+      .footer-buttons {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        width: 100% !important;
+        gap: 8px !important;
+      }
+    }
+
+    @media (max-height: 540px) and (orientation: landscape) and (max-width: 950px) {
+      .game-shell {
+        min-height: 100dvh !important;
+      }
+
+      .planet-scene {
+        height: 78vh !important;
+        min-height: 280px !important;
+      }
+
+      .scroll-list {
+        max-height: 70vh !important;
+      }
+    }
+
+    @supports (padding: env(safe-area-inset-left)) {
+      body {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+    }
+  </style>
 </head>
+
 <body>
   <canvas id="spaceBackground" aria-hidden="true"></canvas>
 
   <main class="game-shell">
+
     <header class="topbar">
+
       <div class="brand">
         <span class="brand-mini">PIXEL SPACE INDUSTRIES</span>
         <h1>COLINIZATION CLICKER</h1>
       </div>
 
       <div class="resource-strip">
+
         <div class="resource-card">
           <span>MATERIALS</span>
           <strong id="materials">0.0</strong>
@@ -36,6 +353,7 @@
           <span>POPULATION</span>
           <strong id="population">8.00B</strong>
         </div>
+
       </div>
 
       <div class="top-controls">
@@ -43,11 +361,15 @@
         <button id="musicButton" class="tiny-button enabled" type="button">MUSIC</button>
         <button id="sfxButton" class="tiny-button enabled" type="button">SFX</button>
       </div>
+
     </header>
 
     <section class="game-grid">
+
       <section class="panel left-panel">
+
         <div class="planet-nav">
+
           <button id="previousPlanet" class="nav-button" type="button">◀</button>
 
           <div class="planet-title-wrap">
@@ -57,27 +379,52 @@
           </div>
 
           <button id="nextPlanet" class="nav-button" type="button">▶</button>
+
         </div>
 
         <div id="planetScene" class="planet-scene">
+
           <canvas id="orbitCanvas" aria-hidden="true"></canvas>
 
-          <button id="planetButton" class="planet-button" type="button" aria-label="Harvest materials">
+          <button
+            id="planetButton"
+            class="planet-button"
+            type="button"
+            aria-label="Harvest materials"
+          >
             <canvas id="planetCanvas" width="1024" height="1024"></canvas>
           </button>
 
           <canvas id="clickCanvas" aria-hidden="true"></canvas>
+
           <div id="floatingNumbers" class="floating-numbers"></div>
 
           <div id="lockOverlay" class="lock-overlay hidden">
+
             <span class="lock-symbol">◈</span>
-            <h3 id="lockTitle">WORLD LOCKED</h3>
-            <p id="lockCost">0 Materials</p>
-            <button id="unlockButton" class="action-button" type="button">COLONIZE</button>
+
+            <h3 id="lockTitle">
+              WORLD LOCKED
+            </h3>
+
+            <p id="lockCost">
+              0 Materials
+            </p>
+
+            <button
+              id="unlockButton"
+              class="action-button"
+              type="button"
+            >
+              COLONIZE
+            </button>
+
           </div>
+
         </div>
 
         <div class="world-stats">
+
           <div class="stat-block">
             <span>WORLD CPS</span>
             <strong id="worldCps">0.0</strong>
@@ -92,9 +439,11 @@
             <span>WORLD CLICK</span>
             <strong id="worldClick">1.0</strong>
           </div>
+
         </div>
 
         <div class="development-wrap">
+
           <div class="development-row">
             <span>DEVELOPMENT</span>
             <strong id="developmentPercent">0%</strong>
@@ -103,47 +452,99 @@
           <div class="development-track">
             <div id="developmentBar" class="development-bar"></div>
           </div>
+
         </div>
+
       </section>
 
       <section class="panel store-panel">
+
         <header class="section-header">
+
           <div>
             <span class="eyebrow">PASSIVE PRODUCTION</span>
             <h2>AUTOMATION</h2>
           </div>
-          <p>Buildings continuously generate Materials.</p>
+
+          <p>
+            Buildings continuously generate Materials.
+          </p>
+
         </header>
 
         <div id="automationList" class="scroll-list"></div>
+
       </section>
 
       <section class="panel upgrades-panel">
+
         <header class="section-header">
+
           <div>
             <span class="eyebrow">PERMANENT BUFFS</span>
             <h2>UPGRADES</h2>
           </div>
-          <p>Player buffs and item multipliers.</p>
+
+          <p>
+            Player buffs and item multipliers.
+          </p>
+
         </header>
 
         <div class="tabs">
-          <button id="playerTab" class="tab active" type="button">PLAYER</button>
-          <button id="itemTab" class="tab" type="button">ITEMS</button>
+
+          <button
+            id="playerTab"
+            class="tab active"
+            type="button"
+          >
+            PLAYER
+          </button>
+
+          <button
+            id="itemTab"
+            class="tab"
+            type="button"
+          >
+            ITEMS
+          </button>
+
         </div>
 
         <div id="upgradeList" class="scroll-list"></div>
+
       </section>
+
     </section>
 
     <footer class="footer">
-      <span id="saveStatus">AUTOSAVE ENABLED</span>
+
+      <span id="saveStatus">
+        AUTOSAVE ENABLED
+      </span>
 
       <div class="footer-buttons">
-        <button id="saveButton" class="footer-button" type="button">SAVE</button>
-        <button id="resetButton" class="footer-button danger" type="button">RESET</button>
+
+        <button
+          id="saveButton"
+          class="footer-button"
+          type="button"
+        >
+          SAVE
+        </button>
+
+        <button
+          id="resetButton"
+          class="footer-button danger"
+          type="button"
+        >
+          RESET
+        </button>
+
       </div>
+
     </footer>
+
   </main>
 
   <script src="script.js"></script>
